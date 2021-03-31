@@ -18,10 +18,10 @@ class DrinkCoffeeViewModel : ViewModel() {
         _coffeeCounter.value = _coffeeCounter.value?.plus(1)
     }
 
-//    TODO 003: modificar o retorno do método resetCounter
 
-    fun resetCounter() {
+    fun resetCounter() : Boolean {
         _coffeeCounter.value = 0
+        return true
     }
 
 }

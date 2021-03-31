@@ -32,10 +32,14 @@ class MainActivity : AppCompatActivity() {
         initQuantity(mViewModel)
         initObserver()
 
-//        TODO 001: implementar setOnClickListener
 
-//        TODO 002: implementar setOnLongClickListener
+        cupImageview.setOnClickListener {
+            mViewModel.incrementCounter()
+        }
 
+        cupImageview.setOnLongClickListener {
+            mViewModel.resetCounter()
+        }
     }
 
     private fun initObserver() {
