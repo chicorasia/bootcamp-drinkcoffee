@@ -6,15 +6,21 @@ import androidx.lifecycle.ViewModel
 
 class DrinkCoffeeViewModel : ViewModel() {
 
-    private val _coffeeCounter = MutableLiveData<Int>(0)
+    private val _coffeeCounter = MutableLiveData<Int>()
     val coffeeCounter: LiveData<Int>
         get() = _coffeeCounter
 
-    private fun incrementCounter(){
-        _coffeeCounter.value?.plus(1)
+    init {
+        _coffeeCounter.value = 0
     }
 
-    private fun resetCounter() {
+    fun incrementCounter(){
+        _coffeeCounter.value = _coffeeCounter.value?.plus(1)
+    }
+
+//    TODO 003: modificar o retorno do método resetCounter
+
+    fun resetCounter() {
         _coffeeCounter.value = 0
     }
 

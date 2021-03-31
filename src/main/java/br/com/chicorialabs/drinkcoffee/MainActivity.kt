@@ -1,6 +1,5 @@
 package br.com.chicorialabs.drinkcoffee
 
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -12,12 +11,13 @@ import br.com.chicorialabs.drinkcoffee.viewmodel.DrinkCoffeeViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mViewModel: DrinkCoffeeViewModel
 
     private val cupImageview: ImageView by lazy {
         binding.mainCupImageview
     }
 
-    private val quantidadeTxt: TextView by lazy {
+    private val quantityTxt: TextView by lazy {
         binding.mainQuantityTxt
     }
 
@@ -27,10 +27,25 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val mViewModel = ViewModelProvider(this).get(DrinkCoffeeViewModel::class.java)
+        mViewModel = ViewModelProvider(this).get(DrinkCoffeeViewModel::class.java)
 
-        quantidadeTxt.text = mViewModel.coffeeCounter.value.toString()
+        initQuantity(mViewModel)
+        initObserver()
 
+//        TODO 001: implementar setOnClickListener
+
+//        TODO 002: implementar setOnLongClickListener
 
     }
+
+    private fun initObserver() {
+        mViewModel.coffeeCounter.observe(this, {
+            quantityTxt.text = it.toString()
+        })
+    }
+
+    private fun initQuantity(mViewModel: DrinkCoffeeViewModel) {
+        quantityTxt.text = mViewModel.coffeeCounter.value.toString()
+    }
+
 }
