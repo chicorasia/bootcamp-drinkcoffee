@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Drink Coffee</string>
+    <string name="drink_coffee_tip">Tomou café? Clique na caneca para atualizar o contador.</string>
+    <string name="description_coffee_cup">caneca de café</string>
+</resources>
