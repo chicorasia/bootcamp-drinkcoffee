@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import br.com.chicorialabs.drinkcoffee.databinding.ActivityMainBinding
+import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils
 import br.com.chicorialabs.drinkcoffee.viewmodel.DrinkCoffeeViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -29,15 +30,21 @@ class MainActivity : AppCompatActivity() {
 
         mViewModel = ViewModelProvider(this).get(DrinkCoffeeViewModel::class.java)
 
-        initQuantity(mViewModel)
+        initQuantity()
         initObserver()
 
 
         cupImageview.setOnClickListener {
             mViewModel.incrementCounter()
+//            TODO 006: buscar o valor do viewModel e gravar nas preferencias
+            mViewModel.coffeeCounter.value.let { value ->
+                PreferencesUtils(this).saveCoffeeCount(value) }
+
         }
 
         cupImageview.setOnLongClickListener {
+//            TODO 007: gravar o valor 0 nas preferences
+            PreferencesUtils(this).saveCoffeeCount(0)
             mViewModel.resetCounter()
         }
     }
@@ -48,8 +55,12 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun initQuantity(mViewModel: DrinkCoffeeViewModel) {
+    private fun initQuantity() {
+
+//        TODO 008: carregar o valor das preferências e setar o viewModel
+        mViewModel.setCoffeCounterTo(PreferencesUtils(this).loadCoffeeCount())
         quantityTxt.text = mViewModel.coffeeCounter.value.toString()
+
     }
 
 }
