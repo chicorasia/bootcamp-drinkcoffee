@@ -25,9 +25,10 @@ class DrinkCoffeeViewModel: ViewModel() {
         return true
     }
 
-//    TODO 005: criar um método setCoffeeCounterTo()
-    fun setCoffeCounterTo(coffeeCounter: Int) {
-        _coffeeCounter.value = coffeeCounter
+    fun setCoffeCounterTo(contagem: Int) {
+        _coffeeCounter.value = contagem
     }
+
+
 
 }
