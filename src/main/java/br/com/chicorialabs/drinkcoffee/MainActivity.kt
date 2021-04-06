@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import br.com.chicorialabs.drinkcoffee.databinding.ActivityMainBinding
 import br.com.chicorialabs.drinkcoffee.viewmodel.DrinkCoffeeViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 lateinit var dataStore: DataStore<Preferences>
 
@@ -19,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mViewModel: DrinkCoffeeViewModel
-
-
 
     private val cupImageview: ImageView by lazy {
         binding.mainCupImageview
@@ -45,8 +44,6 @@ class MainActivity : AppCompatActivity() {
 
 
         cupImageview.setOnClickListener {
-
-//            val value = mViewModel.coffeeCounter.value ?: 0
             lifecycleScope.launch {
                 mViewModel.incrementCounter()
             }
@@ -54,15 +51,12 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        // TODO: Resolver uma coroutine com retorno tipo boolean
         cupImageview.setOnLongClickListener {
-            lifecycleScope.launch {
+            runBlocking {
                 mViewModel.resetCounter()
             }
-            true
         }
     }
-
 
 
     private fun initObserver() {
@@ -75,8 +69,6 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             mViewModel.loadCounter()
         }
-//        quantityTxt.text = mViewModel.coffeeCounter.value.toString()
-
     }
 
 }

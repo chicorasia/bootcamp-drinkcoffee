@@ -7,10 +7,8 @@ import kotlinx.coroutines.flow.first
 
 class PreferencesUtils {
 
-
     companion object{
         const val KEY_COFFEE_COUNT = "br.com.chicorialabs.drinkcoffee.COFFEE_COUNTER"
-        const val DEFAULT_VALUE = 0
 
         suspend fun save(key: String, value: Int) {
             val dataStoreKey = preferencesKey<Int>(key)
@@ -26,19 +24,5 @@ class PreferencesUtils {
         }
 
     }
-
-//    fun loadCoffeeCount() : Int {
-//        return prefs.getInt(KEY_COFFEE_COUNT, DEFAULT_VALUE)
-//    }
-//
-//    fun saveCoffeeCount(coffeCount: Int?) {
-//        with (prefs.edit()) {
-//            putInt(KEY_COFFEE_COUNT, coffeCount ?: 0)
-//            commit()
-//        }
-//    }
-
-
-
 
 }
