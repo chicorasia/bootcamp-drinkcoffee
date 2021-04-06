@@ -1,5 +1,6 @@
 package br.com.chicorialabs.drinkcoffee
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -7,20 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import br.com.chicorialabs.drinkcoffee.databinding.ActivityMainBinding
-import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils
 import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils.Companion.KEY_COFFEE_COUNT
 import br.com.chicorialabs.drinkcoffee.viewmodel.DrinkCoffeeViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-//    TODO 002: criar um objeto DataStore como atributo da MainActivity*
-
-lateinit var dataStore: DataStore<Preferences>
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "coffee_counter")
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,9 +41,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-//    TODO 003: inicializar o dataStore, com o nome desejado
-
-        dataStore = createDataStore(name = "coffee_counter")
 
         mViewModel = ViewModelProvider(this).get(DrinkCoffeeViewModel::class.java)
 
@@ -60,9 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//    TODO 007: chamar o método save() no OnLongClickListener(), passando 0 como valor
         cupImageview.setOnLongClickListener {
-//            PreferencesUtils(this).saveCoffeeCount(0)
             lifecycleScope.launch {
                 save(KEY_COFFEE_COUNT, 0)
             }
@@ -76,22 +71,18 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-//    TODO 008: chamar o método read() no initQuantity() para iniciar o contador com o valor gravado
     private fun initQuantity() {
 //        mViewModel.setCoffeCounterTo(PreferencesUtils(this).loadCoffeeCount())
         lifecycleScope.launch {
             mViewModel.setCoffeCounterTo(read(KEY_COFFEE_COUNT) ?: 0)
         }
         quantityTxt.text = mViewModel.coffeeCounter.value.toString()
-
     }
 
-//    TODO 004: criar uma função para gravar uma preferência, recebe uma chave e um valor
-
     suspend fun save(key: String, value: Int) {
-        val dataStoreKey = preferencesKey<Int>(key)
-        dataStore.edit { coffeeCounter ->
-            coffeeCounter[dataStoreKey] = value
+        val prefKey = intPreferencesKey(key)
+        dataStore.edit { coffeCount ->
+            coffeCount[prefKey] = value
         }
     }
 
