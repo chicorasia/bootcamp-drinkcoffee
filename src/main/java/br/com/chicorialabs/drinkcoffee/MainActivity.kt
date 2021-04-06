@@ -1,19 +1,26 @@
 package br.com.chicorialabs.drinkcoffee
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.createDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import br.com.chicorialabs.drinkcoffee.databinding.ActivityMainBinding
-import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils
 import br.com.chicorialabs.drinkcoffee.viewmodel.DrinkCoffeeViewModel
+import kotlinx.coroutines.launch
 
+lateinit var dataStore: DataStore<Preferences>
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mViewModel: DrinkCoffeeViewModel
+
+
 
     private val cupImageview: ImageView by lazy {
         binding.mainCupImageview
@@ -29,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        dataStore = createDataStore(name = "coffee_count")
+
         mViewModel = ViewModelProvider(this).get(DrinkCoffeeViewModel::class.java)
 
         initQuantity()
@@ -36,16 +45,25 @@ class MainActivity : AppCompatActivity() {
 
 
         cupImageview.setOnClickListener {
-            mViewModel.incrementCounter()
-            PreferencesUtils(this).saveCoffeeCount(mViewModel.coffeeCounter.value)
+
+//            val value = mViewModel.coffeeCounter.value ?: 0
+            lifecycleScope.launch {
+                mViewModel.incrementCounter()
+            }
+
 
         }
 
+        // TODO: Resolver uma coroutine com retorno tipo boolean
         cupImageview.setOnLongClickListener {
-            PreferencesUtils(this).saveCoffeeCount(0)
-            mViewModel.resetCounter()
+            lifecycleScope.launch {
+                mViewModel.resetCounter()
+            }
+            true
         }
     }
+
+
 
     private fun initObserver() {
         mViewModel.coffeeCounter.observe(this, {
@@ -54,8 +72,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initQuantity() {
-        mViewModel.setCoffeCounterTo(PreferencesUtils(this).loadCoffeeCount())
-        quantityTxt.text = mViewModel.coffeeCounter.value.toString()
+        lifecycleScope.launch {
+            mViewModel.loadCounter()
+        }
+//        quantityTxt.text = mViewModel.coffeeCounter.value.toString()
 
     }
 

@@ -3,8 +3,10 @@ package br.com.chicorialabs.drinkcoffee.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils
+import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils.Companion.KEY_COFFEE_COUNT
 
-class DrinkCoffeeViewModel: ViewModel() {
+class DrinkCoffeeViewModel : ViewModel() {
 
     private val _coffeeCounter = MutableLiveData<Int>()
 
@@ -15,20 +17,21 @@ class DrinkCoffeeViewModel: ViewModel() {
         _coffeeCounter.value = 0
     }
 
-    fun incrementCounter(){
+    suspend fun incrementCounter() {
         _coffeeCounter.value = _coffeeCounter.value?.plus(1)
+        val valor = _coffeeCounter.value
+        PreferencesUtils.save(KEY_COFFEE_COUNT, valor ?:  0)
     }
 
-
-    fun resetCounter() : Boolean {
+    suspend fun resetCounter(): Boolean {
         _coffeeCounter.value = 0
+        PreferencesUtils.save(KEY_COFFEE_COUNT, 0)
         return true
     }
 
-    fun setCoffeCounterTo(contagem: Int) {
-        _coffeeCounter.value = contagem
+    suspend fun loadCounter() {
+        _coffeeCounter.value = PreferencesUtils.read(KEY_COFFEE_COUNT)
     }
-
 
 
 }
