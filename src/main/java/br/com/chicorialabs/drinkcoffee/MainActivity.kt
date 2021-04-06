@@ -12,6 +12,15 @@ import br.com.chicorialabs.drinkcoffee.viewmodel.DrinkCoffeeViewModel
 
 class MainActivity : AppCompatActivity() {
 
+
+//    TODO 002: criar um objeto DataStore como atributo da MainActivity
+//    TODO 003: inicializar o dataStore, com o nome desejado
+//    TODO 004: criar uma função para gravar uma preferência, recebe uma chave e um valor
+//    TODO 005: criar uma função para ler uma preferência, recebe somente uma chave
+//    TODO 006: chamar o métodos save() no OnClickListener()
+//    TODO 007: chamar o método save() no OnLongClickListener(), passando 0 como valor
+//    TODO 008: chamar o método read() no initQuantity() para iniciar o contador com o valor gravado
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var mViewModel: DrinkCoffeeViewModel
 

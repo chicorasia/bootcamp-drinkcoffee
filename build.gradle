@@ -35,6 +35,8 @@ android {
     }
 }
 
+//TODO 001: Adicionar as dependências no build.gradle
+
 dependencies {
     def lifecycle_version = "2.3.0"
 

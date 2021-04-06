@@ -4,6 +4,7 @@ import android.content.Context
 
 class PreferencesUtils(context: Context) {
 
+//    TODO 001A: comentar esse campo e métodos e ver onde o código quebra
     val prefs = context.getSharedPreferences(KEY_COFFEE_COUNT, Context.MODE_PRIVATE)
 
     companion object{
