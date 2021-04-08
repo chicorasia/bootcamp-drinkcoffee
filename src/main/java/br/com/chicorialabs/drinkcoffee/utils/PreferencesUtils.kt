@@ -2,6 +2,8 @@ package br.com.chicorialabs.drinkcoffee.utils
 
 import android.content.Context
 
+//TODO 007: Eliminar o context como parâmetro do PreferencesUtils bem como os membros redundantes
+
 class PreferencesUtils(context: Context) {
 
 //    val prefs = context.getSharedPreferences(KEY_COFFEE_COUNT, Context.MODE_PRIVATE)

@@ -24,6 +24,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "co
 
 class MainActivity : AppCompatActivity() {
 
+//    TODO 006: eliminar referências ao ViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var mViewModel: DrinkCoffeeViewModel
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         initQuantity()
         initObserver()
 
+//        TODO 002: modificar o onCLickListener para gravar diretamente, sem usar o viewModel
         cupImageview.setOnClickListener {
             mViewModel.incrementCounter()
             lifecycleScope.launch {
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+//        TODO 004: Modificar o OnLongClickListener para gravar o valor Default nas preferências usando o reset();
         cupImageview.setOnLongClickListener {
             lifecycleScope.launch {
                 save(KEY_COFFEE_COUNT, 0)
@@ -63,12 +66,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+//    TODO 005: eliminar o método initObserver(), que vai se tornar redundante
     private fun initObserver() {
         mViewModel.coffeeCounter.observe(this, {
             quantityTxt.text = it.toString()
         })
     }
 
+//    TODO 001: Modificar o método initQuantity() para coletar o Flow
     private fun initQuantity() {
         lifecycleScope.launch {
             mViewModel.setCoffeCounterTo(read(KEY_COFFEE_COUNT).first() ?: 0)
@@ -91,6 +96,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+//    TODO 003: Criar um método reset( ) : Boolean para gravar 0 nas preferências
 
 
 }
