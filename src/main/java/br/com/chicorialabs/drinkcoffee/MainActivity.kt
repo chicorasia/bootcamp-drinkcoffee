@@ -47,9 +47,7 @@ class MainActivity : AppCompatActivity() {
         initQuantity()
         initObserver()
 
-//    TODO 006: chamar o métodos save() no OnClickListener()
         cupImageview.setOnClickListener {
-//            PreferencesUtils(this).saveCoffeeCount(mViewModel.coffeeCounter.value)
             mViewModel.incrementCounter()
             lifecycleScope.launch {
                 val counter = mViewModel.coffeeCounter.value
@@ -72,9 +70,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initQuantity() {
-//        mViewModel.setCoffeCounterTo(PreferencesUtils(this).loadCoffeeCount())
         lifecycleScope.launch {
-            mViewModel.setCoffeCounterTo(read(KEY_COFFEE_COUNT) ?: 0)
+            mViewModel.setCoffeCounterTo(read(KEY_COFFEE_COUNT).first() ?: 0)
         }
         quantityTxt.text = mViewModel.coffeeCounter.value.toString()
     }
@@ -86,11 +83,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    TODO 005: criar uma função para ler uma preferência, recebe somente uma chave
-    suspend fun read(key: String) : Int? {
-        val dataStoreKey = preferencesKey<Int>(key)
-        val preferences = dataStore.data.first()
-        return preferences[dataStoreKey]
+    suspend fun read(key: String) : Flow<Int?> {
+        val prefKey = intPreferencesKey(key)
+        return dataStore.data.map { coffeeCount ->
+            coffeeCount[prefKey]
+        }
+
     }
 
 
