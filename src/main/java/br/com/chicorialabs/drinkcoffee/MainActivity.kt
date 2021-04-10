@@ -14,11 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import br.com.chicorialabs.drinkcoffee.databinding.ActivityMainBinding
 import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils.Companion.DEFAULT_COFFEE_COUNT_VALUE
 import br.com.chicorialabs.drinkcoffee.utils.PreferencesUtils.Companion.KEY_COFFEE_COUNT
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "coffee_counter")
 
@@ -50,10 +50,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         cupImageview.setOnLongClickListener {
-            lifecycleScope.launch {
-                reset(KEY_COFFEE_COUNT, DEFAULT_COFFEE_COUNT_VALUE)
-            }
-            true
+            launchAndReturnTrue { reset(KEY_COFFEE_COUNT,
+                DEFAULT_COFFEE_COUNT_VALUE) }
         }
     }
 
@@ -80,6 +78,11 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+   private fun launchAndReturnTrue(block: suspend () -> Any? ) : Boolean {
+       lifecycleScope.launch { block() }
+       return true
+   }
 
     suspend fun reset(key: String, value: Int) {
         save(key, value)
