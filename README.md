@@ -2,7 +2,9 @@
 
 Explorando a captura de cliques longos e curtos.
 
-Persistência de dados com Preferences DataStore.
+- Persistência de dados com Preferences DataStore.
+- Atualização da UI em tempo real por meio de corrotinas e acesso ao Flow<>
+
 
 Para seguir o vídeo utilize o commit `a0cad509`.
 
